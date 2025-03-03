@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -5,8 +6,36 @@ import java.util.Scanner;
 public class App_final {
     public static void main(String[] args) {
 
-        // creo un menu login e registrazione
-        //
+        Registro_Utenti registro = new Registro_Utenti();
+
+
+        int scelta = 0;
+        do{
+            scelta = printMenuIniziale();
+            switch (scelta) {
+                case 1:
+                Utente utente = login(registro);
+                    if(utente != null){
+                        secondomenu(utente);
+                    }
+                    else{
+                        System.out.println("Login fallito");
+                    }
+                    break;
+                case 2:
+                    registrazione();
+                    break;
+                case 3:
+                    stampaRegistro();
+                    break;
+                case 4:
+                    System.out.println("Arrivederci");
+                    return;
+                default:
+                    System.out.println("Scelta non valida");
+            }
+        }while (scelta != 4); 
+
     }
 
     // print del menu iniziale return scelta utente (int)
@@ -23,6 +52,79 @@ public class App_final {
         scanner.close();
         return scelta;
     }
+
+    public static Utente login(Registro_Utenti registro) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci nome utente");
+        String nome = scanner.nextLine();
+        System.out.println("Inserisci password");
+        String password = scanner.nextLine();
+        return registro.login(nome, password);
+    }
+
+    public static void registrazione(Registro_Utenti registro){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci nome utente");
+        String nome = scanner.nextLine();
+        System.out.println("Inserisci password");
+        String password = scanner.nextLine();
+        registro.registrazione(nome, password);
+        scanner.close();
+    }
+
+    public static void stampaRegistro(Registro_Utenti registro){
+        registro.stampa();
+    }
+
+    public static void secondomenu(Utente utente){
+        int scelta = 0;
+        do{
+        System.out.println("1. Modifica profilo");
+        System.out.println("2. Gioca");
+        System.out.println("4. Esci");
+        Scanner scanner = new Scanner(System.in);
+        scelta = scanner.nextInt();
+        switch (scelta) {
+            case 1:
+                modificaProfilo(utente);
+                break;
+            case 2:
+                gioca();
+                break;
+            case 4:
+                System.out.println("Arrivederci");
+                return;
+            default:
+                System.out.println("Scelta non valida");
+        }
+    }while(scelta != 4);
+    }
+
+    public static void modificaProfilo(Utente utente){
+        int scelta = 0;
+        do{
+            System.out.println("1. Cambia password");
+            System.out.println("2. Cambia username");
+            System.out.println("3. Esci");
+            Scanner scanner = new Scanner(System.in);
+            scelta = scanner.nextInt();
+            switch (scelta) {
+                case 1:
+                    cambiaPassword(utente);
+                    break;
+                case 2:
+                    cambiaUsername(utente);
+                    break;
+                case 3:
+                    System.out.println("Arrivederci");
+                    return;
+                default:
+                    System.out.println("Scelta non valida");
+            }
+        }while(scelta != 3);
+    }
+
+
 }
 
 // classe Utente
@@ -39,6 +141,8 @@ class Utente {
     public String toString() {
         return "Nome: " + nome + " Password: " + password;
     }
+
+    public 
 
 }
 
@@ -64,13 +168,13 @@ class Registro_Utenti {
         System.out.println("Utente registrato");
     }
 
-    public boolean login(String nome, String password) {
+    public Utente login(String nome, String password) {
         for (Utente u : utenti) {
             if (u.nome.equals(nome) && u.password.equals(password)) {
-                return true;
+                return u;
             }
         }
-        return false;
+        return null;
     }
 
     public void changePassword(String nome, String password, String newPassword) {
@@ -96,8 +200,41 @@ class Registro_Utenti {
     }
 }
 
-class GiocoMatematica{
-    public void gioco(){
+class GiocoMatematica {
+
+    int livello = 1; // 1 facile 2 medio 3 difficile
+    int punteggio = 0; // punteggio del giocatore
+
+    public void start() {
+        do {
+            switch (livello) {
+                case 1:
+                    livelloFacile();
+                    break;
+                case 2:
+                    livelloMedio();
+                    break;
+                case 3:
+                    livelloDifficile();
+                    break;
+                case 4:
+                    System.out.println("Punteggio finale: " + punteggio);
+                    System.out.println("WIN!");
+                    break;
+                case -1:
+                    System.out.println("Punteggio finale: " + punteggio);
+                    System.out.println("GAME OVER!");
+                    break;
+                default:
+                    System.out.println("Livello non valido");
+            }
+        } while (livello != -1 || livello != 4);
+        {
+
+        }
+    }
+
+    public void livelloFacile() {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         int num1 = random.nextInt(1000);
@@ -106,13 +243,57 @@ class GiocoMatematica{
         System.out.println("Quanto fa " + num1 + " + " + num2 + " ?");
         // controllo risposta
         int risposta_utente = scanner.nextInt();
-        if(risposta == risposta_utente){
+        if (risposta == risposta_utente) {
             System.out.println("Risposta corretta");
-        }else{
+            punteggio += 10;
+            livello++;
+        } else {
             System.out.println("Risposta sbagliata");
+            punteggio -= 5;
+            livello = -1;
             return;
         }
+    }
 
-        
+    public void livelloMedio() {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int num1 = random.nextInt(1000);
+        int num2 = random.nextInt(1000);
+        int risposta = num1 * num2;
+        System.out.println("Quanto fa " + num1 + " - " + num2 + " ?");
+        // controllo risposta
+        int risposta_utente = scanner.nextInt();
+        if (risposta == risposta_utente) {
+            System.out.println("Risposta corretta");
+            punteggio += 20;
+            livello++;
+        } else {
+            System.out.println("Risposta sbagliata");
+            punteggio -= 10;
+            livello = -1;
+            return;
+        }
+    }
+
+    public void livelloDifficile() {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int num1 = random.nextInt(1000);
+        int num2 = random.nextInt(1000);
+        int risposta = num1 / num2;
+        System.out.println("Quanto fa " + num1 + " / " + num2 + " ?");
+        // controllo risposta
+        int risposta_utente = scanner.nextInt();
+        if (risposta == risposta_utente) {
+            System.out.println("Risposta corretta");
+            punteggio += 30;
+            livello++;
+        } else {
+            System.out.println("Risposta sbagliata");
+            punteggio -= 15;
+            livello = -1;
+            return;
+        }
     }
 }
