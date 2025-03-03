@@ -1,10 +1,26 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class App_final {
     public static void main(String[] args) {
 
         // creo un menu login e registrazione
         //
+    }
+
+    // print del menu iniziale return scelta utente (int)
+    public static int printMenuIniziale() {
+        boolean exit = false;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Menu iniziale");
+        System.out.println("1. Login");
+        System.out.println("2. Registrazione");
+        System.out.println("3. Stampa registro utenti");
+        System.out.println("4. Esci");
+        int scelta = scanner.nextInt();
+
+        scanner.close();
+        return scelta;
     }
 }
 
