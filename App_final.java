@@ -3,3 +3,14 @@ public class App_final {
         
     }
 }
+
+class Utente{
+    String nome;
+    String password; 
+
+    public Utente(String nome, String password){
+        this.nome = nome;
+        this.password = password;
+    }
+    
+}
