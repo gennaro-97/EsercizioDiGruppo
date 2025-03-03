@@ -23,10 +23,10 @@ public class App_final {
                     }
                     break;
                 case 2:
-                    registrazione();
+                    registrazione(registro);
                     break;
                 case 3:
-                    stampaRegistro();
+                    registro.print();
                     break;
                 case 4:
                     System.out.println("Arrivederci");
@@ -110,10 +110,10 @@ public class App_final {
             scelta = scanner.nextInt();
             switch (scelta) {
                 case 1:
-                    cambiaPassword(utente);
+                    utente.cambiaPassword();
                     break;
                 case 2:
-                    cambiaUsername(utente);
+                    utente.cambiaUsername();
                     break;
                 case 3:
                     System.out.println("Arrivederci");
@@ -142,7 +142,19 @@ class Utente {
         return "Nome: " + nome + " Password: " + password;
     }
 
-    public 
+    public void cambiaPassword(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci nuova password");
+        String newPassword = scanner.nextLine();
+        this.password = newPassword;
+    }
+
+    public void cambiaUsername(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci nuovo username");
+        String newNome = scanner.nextLine();
+        this.nome = newNome;
+    }
 
 }
 
@@ -177,27 +189,6 @@ class Registro_Utenti {
         return null;
     }
 
-    public void changePassword(String nome, String password, String newPassword) {
-        for (Utente u : utenti) {
-            if (u.nome.equals(nome) && u.password.equals(password)) {
-                u.password = newPassword;
-                System.out.println("Password cambiata");
-                return;
-            }
-        }
-        System.out.println("Utente non trovato");
-    }
-
-    public void changeUsername(String nome, String password, String newNome) {
-        for (Utente u : utenti) {
-            if (u.nome.equals(nome) && u.password.equals(password)) {
-                u.nome = newNome;
-                System.out.println("Username cambiato");
-                return;
-            }
-        }
-        System.out.println("Utente non trovato");
-    }
 }
 
 class GiocoMatematica {
@@ -229,10 +220,11 @@ class GiocoMatematica {
                     System.out.println("Livello non valido");
             }
         } while (livello != -1 || livello != 4);
-        {
-
-        }
     }
+        
+
+        
+    
 
     public void livelloFacile() {
         Scanner scanner = new Scanner(System.in);
