@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class App_final {
@@ -92,5 +93,26 @@ class Registro_Utenti {
             }
         }
         System.out.println("Utente non trovato");
+    }
+}
+
+class GiocoMatematica{
+    public void gioco(){
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int num1 = random.nextInt(1000);
+        int num2 = random.nextInt(1000);
+        int risposta = num1 + num2;
+        System.out.println("Quanto fa " + num1 + " + " + num2 + " ?");
+        // controllo risposta
+        int risposta_utente = scanner.nextInt();
+        if(risposta == risposta_utente){
+            System.out.println("Risposta corretta");
+        }else{
+            System.out.println("Risposta sbagliata");
+            return;
+        }
+
+        
     }
 }
