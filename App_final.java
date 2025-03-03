@@ -28,10 +28,6 @@ class Utente {
 class Registro_Utenti {
     ArrayList<Utente> utenti = new ArrayList<Utente>();
 
-    public void addUtente(Utente u) {
-        utenti.add(u);
-    }
-
     public void stampa() {
         for (Utente u : utenti) {
             System.out.println(u);
@@ -58,5 +54,27 @@ class Registro_Utenti {
             }
         }
         return false;
+    }
+
+    public void changePassword(String nome, String password, String newPassword) {
+        for (Utente u : utenti) {
+            if (u.nome.equals(nome) && u.password.equals(password)) {
+                u.password = newPassword;
+                System.out.println("Password cambiata");
+                return;
+            }
+        }
+        System.out.println("Utente non trovato");
+    }
+
+    public void changeUsername(String nome, String password, String newNome) {
+        for (Utente u : utenti) {
+            if (u.nome.equals(nome) && u.password.equals(password)) {
+                u.nome = newNome;
+                System.out.println("Username cambiato");
+                return;
+            }
+        }
+        System.out.println("Utente non trovato");
     }
 }
