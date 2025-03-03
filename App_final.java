@@ -7,11 +7,12 @@ public class App_final {
     public static void main(String[] args) {
 
         Registro_Utenti registro = new Registro_Utenti();
-
+        Scanner scanner = new Scanner(System.in);
+        Scanner sc_NUM = new Scanner(System.in);
 
         int scelta = 0;
         do{
-            scelta = printMenuIniziale();
+            scelta = printMenuIniziale(scanner, sc_NUM);
             switch (scelta) {
                 case 1:
                 Utente utente = login(registro);
@@ -26,7 +27,7 @@ public class App_final {
                     registrazione(registro);
                     break;
                 case 3:
-                    registro.print();
+                    registro.stampa();
                     break;
                 case 4:
                     System.out.println("Arrivederci");
@@ -39,17 +40,14 @@ public class App_final {
     }
 
     // print del menu iniziale return scelta utente (int)
-    public static int printMenuIniziale() {
-        boolean exit = false;
-        Scanner scanner = new Scanner(System.in);
+    public static int printMenuIniziale(Scanner scanner, Scanner sc_NUM) {
         System.out.println("Menu iniziale");
         System.out.println("1. Login");
         System.out.println("2. Registrazione");
         System.out.println("3. Stampa registro utenti");
         System.out.println("4. Esci");
-        int scelta = scanner.nextInt();
+        int scelta = sc_NUM.nextInt();
 
-        scanner.close();
         return scelta;
     }
 
@@ -69,7 +67,6 @@ public class App_final {
         System.out.println("Inserisci password");
         String password = scanner.nextLine();
         registro.registrazione(nome, password);
-        scanner.close();
     }
 
     public static void stampaRegistro(Registro_Utenti registro){
@@ -89,7 +86,8 @@ public class App_final {
                 modificaProfilo(utente);
                 break;
             case 2:
-                gioca();
+                GiocoMatematica gioco = new GiocoMatematica();
+                gioco.start();
                 break;
             case 4:
                 System.out.println("Arrivederci");
@@ -99,6 +97,9 @@ public class App_final {
         }
     }while(scelta != 4);
     }
+
+
+    
 
     public static void modificaProfilo(Utente utente){
         int scelta = 0;
@@ -122,6 +123,27 @@ public class App_final {
                     System.out.println("Scelta non valida");
             }
         }while(scelta != 3);
+    }
+
+    public static void cambiaPassword(Utente utente){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci la vecchia password");
+        String oldPassword = scanner.nextLine();
+        System.out.println("Inserisci la nuova password");
+        String newPassword = scanner.nextLine();
+        Registro_Utenti registro = new Registro_Utenti();
+        registro.changePassword(utente.nome, oldPassword, newPassword);
+        scanner.close();
+    }
+    public static void cambiaUsername(Utente utente){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci la vecchia password");
+        String oldPassword = scanner.nextLine();
+        System.out.println("Inserisci il nuovo username");
+        String newUsername = scanner.nextLine();
+        Registro_Utenti registro = new Registro_Utenti();
+        registro.changeUsername(utente.nome, oldPassword, newUsername);
+        scanner.close();
     }
 
 
@@ -189,6 +211,27 @@ class Registro_Utenti {
         return null;
     }
 
+    public void changePassword(String nome, String password, String newPassword) {
+        for (Utente u : utenti) {
+            if (u.nome.equals(nome) && u.password.equals(password)) {
+                u.password = newPassword;
+                System.out.println("Password cambiata");
+                return;
+            }
+        }
+        System.out.println("Utente non trovato");
+    }
+
+    public void changeUsername(String nome, String password, String newNome) {
+        for (Utente u : utenti) {
+            if (u.nome.equals(nome) && u.password.equals(password)) {
+                u.nome = newNome;
+                System.out.println("Username cambiato");
+                return;
+            }
+        }
+        System.out.println("Utente non trovato");
+    }
 }
 
 class GiocoMatematica {
@@ -211,7 +254,7 @@ class GiocoMatematica {
                 case 4:
                     System.out.println("Punteggio finale: " + punteggio);
                     System.out.println("WIN!");
-                    break;
+                    return;
                 case -1:
                     System.out.println("Punteggio finale: " + punteggio);
                     System.out.println("GAME OVER!");
@@ -219,7 +262,10 @@ class GiocoMatematica {
                 default:
                     System.out.println("Livello non valido");
             }
-        } while (livello != -1 || livello != 4);
+        } while (livello != -1 && livello != 5);
+        {
+
+        }
     }
         
 
@@ -229,8 +275,8 @@ class GiocoMatematica {
     public void livelloFacile() {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        int num1 = random.nextInt(1000);
-        int num2 = random.nextInt(1000);
+        int num1 = random.nextInt(100);
+        int num2 = random.nextInt(100);
         int risposta = num1 + num2;
         System.out.println("Quanto fa " + num1 + " + " + num2 + " ?");
         // controllo risposta
@@ -238,33 +284,31 @@ class GiocoMatematica {
         if (risposta == risposta_utente) {
             System.out.println("Risposta corretta");
             punteggio += 10;
-            livello++;
+            livello = 2;
         } else {
             System.out.println("Risposta sbagliata");
             punteggio -= 5;
             livello = -1;
-            return;
         }
     }
 
     public void livelloMedio() {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        int num1 = random.nextInt(1000);
-        int num2 = random.nextInt(1000);
+        int num1 = random.nextInt(100);
+        int num2 = random.nextInt(100);
         int risposta = num1 * num2;
-        System.out.println("Quanto fa " + num1 + " - " + num2 + " ?");
+        System.out.println("Quanto fa " + num1 + " * " + num2 + " ?");
         // controllo risposta
         int risposta_utente = scanner.nextInt();
         if (risposta == risposta_utente) {
             System.out.println("Risposta corretta");
             punteggio += 20;
-            livello++;
+            livello = 3;
         } else {
             System.out.println("Risposta sbagliata");
             punteggio -= 10;
-            livello = -1;
-            return;
+            livello = 1;
         }
     }
 
@@ -280,12 +324,11 @@ class GiocoMatematica {
         if (risposta == risposta_utente) {
             System.out.println("Risposta corretta");
             punteggio += 30;
-            livello++;
+            livello = 4;
         } else {
             System.out.println("Risposta sbagliata");
             punteggio -= 15;
-            livello = -1;
-            return;
+            livello = 2;
         }
     }
 }
