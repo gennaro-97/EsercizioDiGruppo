@@ -4,6 +4,7 @@ public class App_final {
     }
 }
 
+//classe Utente
 class Utente{
     String nome;
     String password; 
@@ -12,5 +13,5 @@ class Utente{
         this.nome = nome;
         this.password = password;
     }
-    
+
 }
